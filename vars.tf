@@ -1,4 +1,4 @@
-variable "ecsClusterName" {
+variable "ecs_cluster_name" {
     type = string
     default = "demo-ecs-cluster"
 }
@@ -11,6 +11,6 @@ variable "num_of_default_avail_zones_to_use" {
 
 variable "availability_zones" {
     type = list(string)
-    default = []
-    description = "this value is ignored if default_avail_zones_to_use > 0, otherwise, specified the availability zones here, such as us-east-1, us-east-2, ... etc"
+    default = [ "us-east-1a" ]
+    description = "this value is IGNORED if default_avail_zones_to_use > 0, otherwise, specified the availability zones here, such as us-east-1, us-east-2, ... etc"
 }

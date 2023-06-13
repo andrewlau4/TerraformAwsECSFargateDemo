@@ -42,8 +42,8 @@ variable "capacity_provider_info" {
         target_capacity = number
     })
     default = {
-      maximum_scaling_step_size = 2
-      minimum_scaling_step_size = 1
+        maximum_scaling_step_size = 2
+        minimum_scaling_step_size = 1
         target_capacity           = 100
     }
 }    

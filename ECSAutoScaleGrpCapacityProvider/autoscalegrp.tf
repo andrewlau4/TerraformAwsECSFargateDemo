@@ -10,7 +10,7 @@ data "aws_ami" "ecs_ec2_image" {
 }
 
 resource "aws_launch_template" "scale_group_lauch_template" {
-    name_prefix   = "${var.ecsClusterName}_auto_scaling_template${var.name_suffix}"
+    name_prefix   = "${var.ecs_cluster_name}_auto_scaling_template${var.name_suffix}"
     image_id      = data.aws_ami.ecs_ec2_image.id
     instance_type = "t2.nano"
 }
@@ -31,7 +31,7 @@ resource "aws_autoscaling_group" "ecs_auto_scaling" {
         version = "$Default"
     }
 
-    availability_zones = [ var.available_zone ]
+    availability_zones = [ var.avail_zone ]
 
     tag {
         //this is needed, see https://registry.terraform.io/providers/hashicorp/aws/3.3.0/docs/resources/ecs_capacity_provider

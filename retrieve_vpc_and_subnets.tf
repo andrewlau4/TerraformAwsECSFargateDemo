@@ -19,16 +19,16 @@ data "aws_subnet" "default_subnets_info" {
 }
 
 locals {
-    useAccountDefaultAZ = (var.num_of_default_avail_zones_to_use <= 0)
+    useAccountDefaultAZ = (var.num_of_default_avail_zones_to_use > 0)
     lengthDefaultAccAZ = local.useAccountDefaultAZ ? length(data.aws_availability_zones.account_default_az.names) : 0
 
-    available_zones = ( local.useAccountDefaultAZ 
+    az_to_deploy_capacity_provider = ( local.useAccountDefaultAZ 
         ? slice(data.aws_availability_zones.account_default_az.names, 
             0, min(var.num_of_default_avail_zones_to_use, local.lengthDefaultAccAZ) ) 
         : var.availability_zones )
 
     //zone name to zone id map
-    zone_name_to_id_map = { for az_name in local.available_zones: 
+    zone_name_to_id_map = { for az_name in local.az_to_deploy_capacity_provider: 
         az_name =>
             data.aws_availability_zones.account_default_az.zone_ids[
                 index(data.aws_availability_zones.account_default_az.names, az_name)]
