@@ -7,3 +7,11 @@ module "autoscale_and_capacity_provider" {
     avail_zone = each.value
     name_suffix = each.value
 }
+
+module "ecs_infrastructure" {
+    source = "./ECSCluster"
+
+    ecs_cluster_name = var.ecs_cluster_name
+    ecs_cluster_capacity_provider_names = [ for i, value in module.autoscale_and_capacity_provider: value.ecs_capacity_provider_name ]
+    
+}

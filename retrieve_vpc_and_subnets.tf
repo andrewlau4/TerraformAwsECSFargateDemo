@@ -25,9 +25,9 @@ locals {
     az_to_deploy_capacity_provider = ( local.useAccountDefaultAZ 
         ? slice(data.aws_availability_zones.account_default_az.names, 
             0, min(var.num_of_default_avail_zones_to_use, local.lengthDefaultAccAZ) ) 
-        : var.availability_zones )
+        : var.avail_zones_to_deploy_autoscale_capacity_provider )
 
-    //zone name to zone id map
+    //zone name to zone id mapping
     zone_name_to_id_map = { for az_name in local.az_to_deploy_capacity_provider: 
         az_name =>
             data.aws_availability_zones.account_default_az.zone_ids[
