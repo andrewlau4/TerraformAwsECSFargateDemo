@@ -27,6 +27,7 @@ locals {
             0, min(var.num_of_default_avail_zones_to_use, local.lengthDefaultAccAZ) ) 
         : var.availability_zones )
 
+    //zone name to zone id map
     zone_name_to_id_map = { for az_name in local.available_zones: 
         az_name =>
             data.aws_availability_zones.account_default_az.zone_ids[

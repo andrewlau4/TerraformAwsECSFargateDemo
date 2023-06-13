@@ -35,14 +35,15 @@ variable "auto_scale_grp_info" {
     }
 }
 
-variable "capacity_weight" {
+variable "capacity_provider_info" {
     type = object({
-      base = number
-      weight = number
+        maximum_scaling_step_size = number
+        minimum_scaling_step_size = number
+        target_capacity = number
     })
     default = {
-        base = 0
-        weight = 1
+      maximum_scaling_step_size = 2
+      minimum_scaling_step_size = 1
+        target_capacity           = 100
     }
-    description = "see https://www.youtube.com/watch?v=Vb_4wAEcfpQ 15:05"
-}
+}    
