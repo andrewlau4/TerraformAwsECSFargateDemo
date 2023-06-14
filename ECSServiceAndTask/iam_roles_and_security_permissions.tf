@@ -63,3 +63,47 @@ resource "aws_iam_role_policy_attachment" "ecs_task_role_policy" {
 
 
 
+
+resource "aws_security_group" "security_ingress" {
+  name = "${var.ecs_cluster_name}-allow"
+  vpc_id = local.service_vpc_id
+
+
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+
+    self = true
+  }
+
+  dynamic "ingress" {
+    for_each = toset(var.service_ingress_allow)
+
+    content {
+      from_port        = ingress.value.from_port
+      to_port          = ingress.value.to_port
+      protocol         = ingress.value.ip_protocol
+      cidr_blocks      = [ingress.value.cidr_ipv4]
+      ipv6_cidr_blocks = [ingress.value.cidr_ipv6]
+    }
+  }
+
+  dynamic "egress" {
+    for_each = toset(var.service_egress_allow)
+
+    content {
+      from_port        = egress.value.from_port
+      to_port          = egress.value.to_port
+      protocol         = egress.value.ip_protocol
+      cidr_blocks      = [egress.value.cidr_ipv4]
+      ipv6_cidr_blocks = [egress.value.cidr_ipv6]
+    }
+  }
+}
+
+
+data "aws_security_group" "default_security_group" {
+  vpc_id = local.service_vpc_id
+  name = "default"
+}
