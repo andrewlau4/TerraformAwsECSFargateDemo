@@ -29,21 +29,28 @@ module "ecs_service_and_task" {
     service_deploy_to_subnet_ids = local.service_deploy_to_subnet_ids
     container_task_policy = file(var.file_path_to_container_policy_json)
     task_image = "${module.ecs_repo.ecr_repo_url}:latest"
+    enable_ec2_service = var.enable_ec2_service
 
     capacity_provider_strategy = concat(
         [
             {
                 capacity_provider_name = "FARGATE"
-                base = element(var.capacity_provider_weights, 0).base
-                weight =  element(var.capacity_provider_weights, 0).weight
+                base = 0
+                weight =  1
+            },
+            {
+                capacity_provider_name = "FARGATE_SPOT"
+                base = 0
+                weight =  1
             }
+
         ],
         [
             for index, cp in module.autoscale_and_capacity_provider:
                 {
                      capacity_provider_name = cp.ecs_capacity_provider_name
-                     base = element(var.capacity_provider_weights, index + 1).base
-                     weight = element(var.capacity_provider_weights, index + 1).weight
+                     base = element(var.capacity_provider_weights, index).base
+                     weight = element(var.capacity_provider_weights, index).weight
                 }
         ]
     )

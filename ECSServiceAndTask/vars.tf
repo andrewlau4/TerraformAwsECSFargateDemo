@@ -109,3 +109,7 @@ variable "capacity_provider_strategy" {
         weight = number
     }))
 }
+
+variable "enable_ec2_service" {
+    type = bool
+}

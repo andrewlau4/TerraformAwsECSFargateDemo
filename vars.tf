@@ -31,3 +31,8 @@ variable "capacity_provider_weights" {
         weight = 1
     }]
 }
+
+variable "enable_ec2_service" {
+    type = bool
+    default = false
+}
