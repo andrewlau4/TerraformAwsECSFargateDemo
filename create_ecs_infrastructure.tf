@@ -25,6 +25,7 @@ module "ecs_service_and_task" {
     source = "./ECSServiceAndTask"
 
     ecs_cluster_name = var.ecs_cluster_name
+    ecs_cluster_id = module.ecs_cluster.ecs_cluster_id
     service_deploy_to_subnet_ids = local.service_deploy_to_subnet_ids
     container_task_policy = file(var.file_path_to_container_policy_json)
     task_image = "${module.ecs_repo.ecr_repo_url}:latest"
