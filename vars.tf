@@ -15,3 +15,8 @@ variable "avail_zones_to_deploy_autoscale_capacity_provider" {
     default = [ "us-east-1a" ]
     description = "this value is IGNORED if default_avail_zones_to_use > 0, otherwise, specified the availability zones here, such as us-east-1, us-east-2, ... etc"
 }
+
+variable "file_path_to_container_policy_json" {
+    type = string
+    default = "default_container_task_policy.json"
+}
