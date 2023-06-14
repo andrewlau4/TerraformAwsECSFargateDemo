@@ -18,5 +18,5 @@ variable "avail_zones_to_deploy_autoscale_capacity_provider" {
 
 variable "file_path_to_container_policy_json" {
     type = string
-    default = "default_container_task_policy.json"
+    default = "example_container_permissions.json"
 }

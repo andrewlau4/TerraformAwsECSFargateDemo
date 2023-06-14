@@ -1,0 +1,27 @@
+[
+  {
+    "image": "${task_image}",
+    "name": "${container_name}",
+
+    "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-region" : "${task_log_region}",
+                    "awslogs-group" : "${ecs_cluster_name}-ecs-log-group",
+                    "awslogs-stream-prefix" : "${ecs_cluster_name}-service",
+                    "awslogs-create-group": "true"
+                }
+    },
+    
+
+    "portMappings": [
+        %{ for port in container_port_mappings  ~}        
+      {
+          "containerPort": ${port},
+          "hostPort": ${port}
+      }
+        %{ endfor ~}
+    ]
+  }
+  
+]

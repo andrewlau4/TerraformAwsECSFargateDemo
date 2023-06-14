@@ -1,5 +1,5 @@
 module "autoscale_and_capacity_provider" {
-    for_each = { for index, avail_zone in local.az_to_deploy_ecs_service: index => avail_zone }
+    for_each = toset( local.az_to_deploy_ecs_service )
 
     source = "./ECSAutoScaleGrpCapacityProvider"
 
@@ -27,4 +27,5 @@ module "ecs_service_and_task" {
     ecs_cluster_name = var.ecs_cluster_name
     service_deploy_to_subnet_ids = local.service_deploy_to_subnet_ids
     container_task_policy = file(var.file_path_to_container_policy_json)
+    task_image = "${module.ecs_repo.ecr_repo_url}:latest"
 }
