@@ -1,5 +1,5 @@
 module "autoscale_and_capacity_provider" {
-    for_each = toset( local.az_to_deploy_ecs_service )
+    for_each = { for index, value in local.az_to_deploy_ecs_service: index => value}
 
     source = "./ECSAutoScaleGrpCapacityProvider"
 
@@ -29,4 +29,22 @@ module "ecs_service_and_task" {
     service_deploy_to_subnet_ids = local.service_deploy_to_subnet_ids
     container_task_policy = file(var.file_path_to_container_policy_json)
     task_image = "${module.ecs_repo.ecr_repo_url}:latest"
+
+    capacity_provider_strategy = concat(
+        [
+            {
+                capacity_provider_name = "FARGATE"
+                base = element(var.capacity_provider_weights, 0).base
+                weight =  element(var.capacity_provider_weights, 0).weight
+            }
+        ],
+        [
+            for index, cp in module.autoscale_and_capacity_provider:
+                {
+                     capacity_provider_name = cp.ecs_capacity_provider_name
+                     base = element(var.capacity_provider_weights, index + 1).base
+                     weight = element(var.capacity_provider_weights, index + 1).weight
+                }
+        ]
+    )
 }

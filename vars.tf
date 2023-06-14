@@ -20,3 +20,14 @@ variable "file_path_to_container_policy_json" {
     type = string
     default = "example_container_permissions.json"
 }
+
+variable "capacity_provider_weights" {
+    type = list(object({
+        base = number
+        weight = number
+    }))
+    default = [{
+        base = 0
+        weight = 1
+    }]
+}

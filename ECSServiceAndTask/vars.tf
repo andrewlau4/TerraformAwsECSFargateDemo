@@ -102,3 +102,10 @@ variable "service_egress_allow" {
     ]
 }
 
+variable "capacity_provider_strategy" {
+    type = list(object({
+        capacity_provider_name = string
+        base = number
+        weight = number
+    }))
+}
