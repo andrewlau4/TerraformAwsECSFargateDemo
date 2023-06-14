@@ -1,5 +1,5 @@
 module "autoscale_and_capacity_provider" {
-    for_each = { for index, avail_zone in local.az_to_deploy_capacity_provider: index => avail_zone }
+    for_each = { for index, avail_zone in local.az_to_deploy_ecs_service: index => avail_zone }
 
     source = "./ECSAutoScaleGrpCapacityProvider"
 
@@ -25,7 +25,6 @@ module "ecs_service_and_task" {
     source = "./ECSServiceAndTask"
 
     ecs_cluster_name = var.ecs_cluster_name
-    service_deploy_to_subnet_ids = flatten( [ for az_name in local.az_to_deploy_capacity_provider: 
-        lookup(local.zone_id_to_subnet_array_map, lookup(local.zone_name_to_id_map, az_name)) ])
+    service_deploy_to_subnet_ids = local.service_deploy_to_subnet_ids
     container_task_policy = file(var.file_path_to_container_policy_json)
 }
