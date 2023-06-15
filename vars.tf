@@ -36,3 +36,13 @@ variable "enable_ec2_service" {
     type = bool
     default = false
 }
+
+variable "codestar_git_source_connection_name" {
+    type = string
+    default = "..."
+}
+
+variable "source_repo_url" {
+    type = string
+    default = "..."
+}
