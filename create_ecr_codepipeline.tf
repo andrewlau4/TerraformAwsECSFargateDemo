@@ -9,5 +9,7 @@ module "ecs_codepipeline" {
     source_repo_url = var.source_repo_url
     ecr_repo_url = module.ecs_repo.ecr_repo_url
     container_name = module.ecs_service_and_task.container_name
-    service_name = module.ecs_service_and_task.fargate_service_name
+    service_name = (var.codepipeline_deploy_to_fargate_or_ec2 == "FARGATE" 
+        ? module.ecs_service_and_task.fargate_service_name 
+        : module.ecs_service_and_task.ec2_service_name )
 }

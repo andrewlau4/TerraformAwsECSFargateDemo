@@ -47,7 +47,4 @@ resource "aws_codebuild_project" "for_codepipeline_ecr_codebuild" {
     type            = "CODEPIPELINE"
   }
 
-  tags = {
-    SERVERLESS_COURSE = "Serverless_Course_chap143_for_codepipeline"
-  }
 }

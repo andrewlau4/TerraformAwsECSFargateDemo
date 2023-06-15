@@ -39,15 +39,20 @@ variable "enable_ec2_service" {
 
 variable "codestar_git_source_connection_name" {
     type = string
-    default = "..."
+    default = "aws_ecs_demo_docker_img"
 }
 
 variable "source_repo_url" {
     type = string
-    default = "..."
+    default = "andrewlau4/AwsECSDemoDockerImage"
 }
 
 variable "enable_code_pipeline" {
     type = bool
-    default = false
+    default = true
+}
+
+variable "codepipeline_deploy_to_fargate_or_ec2" {
+    type = string
+    default = "FARGATE"  // can be EC2
 }
