@@ -28,3 +28,7 @@ variable "image_definition_filename" {
 variable "container_name" {
     type = string
 }
+
+variable "service_name" {
+    type = string
+}

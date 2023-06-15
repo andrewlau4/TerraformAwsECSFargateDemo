@@ -46,3 +46,8 @@ variable "source_repo_url" {
     type = string
     default = "..."
 }
+
+variable "enable_code_pipeline" {
+    type = bool
+    default = false
+}
