@@ -1,11 +1,9 @@
 locals {
-    random_strings = split("-", uuid())
-    bucket_suffix = local.random_strings[length(local.random_strings)-1]
     bucket_prefix = replace(var.ecs_cluster_name, "_", "-")
 }
 
 resource "aws_s3_bucket" "ecr_codepipeline_bucket" { 
-  bucket = "${local.bucket_prefix}-codepipeline-bucket-${local.bucket_suffix}"
+  bucket_prefix = "${local.bucket_prefix}-codepipeline-bucket-"
 }
 
 resource "aws_s3_bucket_ownership_controls" "ecr_codepipeline_bucket_ownrshp_ctrl" {
