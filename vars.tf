@@ -37,6 +37,11 @@ variable "enable_ec2_service" {
     default = false
 }
 
+variable "enable_fargate_service" {
+    type = bool
+    default = true
+}
+
 variable "codestar_git_source_connection_name" {
     type = string
     default = "aws_ecs_demo_docker_img"

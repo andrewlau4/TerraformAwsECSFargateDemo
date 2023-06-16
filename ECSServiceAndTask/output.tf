@@ -1,5 +1,7 @@
 output "fargate_service_name" {
-    value = aws_ecs_service.ecs_fargate_task_service.name
+    value = (var.enable_fargate_service 
+        ? aws_ecs_service.ecs_fargate_task_service[0].name
+        : null)
 }
 
 output "ec2_service_name" {

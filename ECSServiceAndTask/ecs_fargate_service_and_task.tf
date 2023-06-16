@@ -22,6 +22,8 @@ resource "aws_ecs_task_definition" "ecs_fargate_task_definition" {
 
 
 resource "aws_ecs_service" "ecs_fargate_task_service" {
+    count = var.enable_fargate_service ? 1 : 0
+
     name            = "${var.ecs_cluster_name}-fargate-service"
     cluster         = var.ecs_cluster_id
     task_definition = aws_ecs_task_definition.ecs_fargate_task_definition.arn

@@ -113,3 +113,7 @@ variable "capacity_provider_strategy" {
 variable "enable_ec2_service" {
     type = bool
 }
+
+variable "enable_fargate_service" {
+    type = bool
+}
