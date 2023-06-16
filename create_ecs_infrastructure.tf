@@ -30,6 +30,7 @@ module "ecs_service_and_task" {
     container_task_policy = file(var.file_path_to_container_policy_json)
     task_image = "${module.ecs_repo.ecr_repo_url}:latest"
     enable_ec2_service = var.enable_ec2_service
+    enable_fargate_service = var.enable_fargate_service
 
     capacity_provider_strategy = concat(
         [
