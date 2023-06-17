@@ -44,7 +44,8 @@ variable "enable_fargate_service" {
 
 variable "codestar_git_source_connection_name" {
     type = string
-    default = "aws_ecs_demo_docker_img"
+    nullable = true
+    default = null
 }
 
 variable "source_repo_url" {
@@ -54,7 +55,7 @@ variable "source_repo_url" {
 
 variable "enable_code_pipeline" {
     type = bool
-    default = true
+    default = false
 }
 
 variable "codepipeline_deploy_to_fargate_or_ec2" {

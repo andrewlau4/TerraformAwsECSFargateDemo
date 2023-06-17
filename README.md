@@ -27,3 +27,18 @@ The weight can be changed in the [create_ecs_infrastructure.tf](create_ecs_infra
 
         ],
 ```
+
+# CodePipeline
+Moreover, a codepipeline is setup to autmatically build an [example node js app](https://github.com/andrewlau4/AwsECSDemoDockerImage) into a docker image; and then push that image into the ECR registry, and then deploy it as ECS service.
+
+To use the codepipeline, your AWS CodePipeline must have a connection to the source repository. You can fork the  [example node js app](https://github.com/andrewlau4/AwsECSDemoDockerImage). Then follow the [GitHub instruction](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-create-github.html) to set it up.
+
+Then run this terraform command to setup the CodePipeline:
+
+```
+terraform apply -var="enable_code_pipeline=true" -var="codestar_git_source_connection_name=your_source_code_connection" -var="source_repo_url=your_docker_app_repository"
+```
+
+
+
+
