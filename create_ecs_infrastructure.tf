@@ -6,6 +6,7 @@ module "autoscale_and_capacity_provider" {
     ecs_cluster_name = var.ecs_cluster_name
     avail_zone = each.value
     name_suffix = "_${each.value}"
+    ec2_managed_termination_protection = var.ec2_managed_termination_protection
 }
 
 module "ecs_cluster" {

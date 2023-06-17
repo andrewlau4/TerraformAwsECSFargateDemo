@@ -47,3 +47,7 @@ variable "capacity_provider_info" {
         target_capacity           = 100
     }
 }    
+
+variable "ec2_managed_termination_protection" {
+    type = bool
+}

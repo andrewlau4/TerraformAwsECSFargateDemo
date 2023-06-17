@@ -4,7 +4,7 @@ resource "aws_ecs_service" "ecs_ec2_task_service" {
     name            = "${var.ecs_cluster_name}-ec2-service"
     cluster         = var.ecs_cluster_id
     task_definition = aws_ecs_task_definition.ecs_fargate_task_definition.arn
-    desired_count   = var.service_desired_count
+    desired_count   = var.ec2_service_desired_count
 
     network_configuration {
         subnets = var.service_deploy_to_subnet_ids

@@ -58,7 +58,17 @@ variable "enable_code_pipeline" {
     default = false
 }
 
+variable "ec2_managed_termination_protection" {
+    type = bool
+    default = true
+    description = "As explained in the Deep Dive on Amazon ECS Capacity Provider youtube video, this will prevent the ec2 from stopping when task is running. "
+}
+
 variable "codepipeline_deploy_to_fargate_or_ec2" {
     type = string
     default = "FARGATE"  // can be EC2
+    validation {
+        condition = var.codepipeline_deploy_to_fargate_or_ec2 == "FARGATE" || var.codepipeline_deploy_to_fargate_or_ec2 == "EC2"
+        error_message = "codepipeline_deploy_to_fargate_or_ec2 must be set to either 'FARGATE' or 'EC2'"
+    }
 }

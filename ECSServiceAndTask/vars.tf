@@ -15,9 +15,14 @@ variable "ecs_cluster_id" {
     type = string
 }
 
-variable "service_desired_count" {
+variable "fargate_service_desired_count" {
     type = number
     default = 1
+}
+
+variable "ec2_service_desired_count" {
+    type = number
+    default = 0
 }
 
 variable "service_deploy_to_subnet_ids" {

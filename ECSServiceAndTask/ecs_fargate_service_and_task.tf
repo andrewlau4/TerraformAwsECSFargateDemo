@@ -27,7 +27,7 @@ resource "aws_ecs_service" "ecs_fargate_task_service" {
     name            = "${var.ecs_cluster_name}-fargate-service"
     cluster         = var.ecs_cluster_id
     task_definition = aws_ecs_task_definition.ecs_fargate_task_definition.arn
-    desired_count   = var.service_desired_count
+    desired_count   = var.fargate_service_desired_count
 
     network_configuration {
         subnets = var.service_deploy_to_subnet_ids
