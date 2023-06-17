@@ -12,7 +12,11 @@ data "aws_ami" "ecs_ec2_image" {
 resource "aws_launch_template" "scale_group_lauch_template" {
     name_prefix   = "${var.ecs_cluster_name}_auto_scaling_template${var.name_suffix}"
     image_id      = data.aws_ami.ecs_ec2_image.id
-    instance_type = "t2.nano"
+    instance_type = var.ami_instance_type
+
+    iam_instance_profile {
+      arn = aws_iam_instance_profile.ecs_ec2_lauch_template_instance_profile.arn
+    }
 }
 
 resource "aws_autoscaling_group" "ecs_auto_scaling" {

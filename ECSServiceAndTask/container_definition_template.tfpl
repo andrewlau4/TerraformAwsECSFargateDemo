@@ -17,8 +17,7 @@
     "portMappings": [
         %{ for port in container_port_mappings  ~}        
       {
-          "containerPort": ${port},
-          "hostPort": ${port}
+          "containerPort": ${port}
       }
         %{ endfor ~}
     ]

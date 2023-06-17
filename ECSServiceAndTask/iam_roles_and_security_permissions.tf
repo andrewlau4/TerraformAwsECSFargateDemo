@@ -22,6 +22,25 @@ resource "aws_iam_role_policy_attachment" "ecs_task-execution-role-policy-attach
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+/*
+//https://serverfault.com/questions/855687/unable-to-start-task-in-ecs-tasks-are-in-pending-state
+//
+//
+//https://catalog.workshops.aws/startup-security-baseline/en-US/c-securing-your-workload/level-1-controls/2-use-roles-for-compute-environments/2-3-create-role-for-container
+//Set up a task Execution IAM Role for the Fargate launch type
+//Set up an instance IAM Role for the EC2 launch type
+//Create an IAM Role for Tasks
+//
+//https://stackoverflow.com/questions/66696083/how-to-get-set-aws-ecs-container-instance-role
+//
+//https://stackoverflow.com/questions/66696083/how-to-get-set-aws-ecs-container-instance-role
+//The console leads you to believe it's an ECS property but in fact it's simply an EC2 property known as "IAM Instance Profile". You have to specify this role by setting the IamInstanceProfile property on a AWS::EC2::Instance or even better on a AWS::EC2::LaunchTemplate resource that can be used inside an AutoScaling group. 
+resource "aws_iam_role_policy_attachment" "ecs_ec2_task-execution-role-policy-attachment" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+*/
+
 resource "aws_iam_role_policy_attachment" "ecs_task-execution-role-cloudwatch-policy-attachment" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
