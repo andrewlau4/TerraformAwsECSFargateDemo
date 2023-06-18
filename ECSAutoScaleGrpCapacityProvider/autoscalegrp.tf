@@ -28,8 +28,9 @@ resource "aws_launch_template" "scale_group_lauch_template" {
 
     //either install the ecs agent yourself, or use the pre-made ami see 
     //     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-install.html
-    user_data = base64decode(
-        "${path.module}/install_ecs_agent.sh"
+    user_data = base64encode(
+        templatefile("${path.module}/install_ecs_agent.sh"),
+        { ecs_cluster_name = var.ecs_cluster_name }
     )
 }
 
