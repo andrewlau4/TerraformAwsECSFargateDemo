@@ -9,4 +9,4 @@
 sudo yum install -y ecs-init
 sudo service docker start
 sudo service ecs start
-# curl -s http://localhost:51678/v1/metadata | python -mjson.tool
+curl -s http://localhost:51678/v1/metadata | python3 -mjson.tool
