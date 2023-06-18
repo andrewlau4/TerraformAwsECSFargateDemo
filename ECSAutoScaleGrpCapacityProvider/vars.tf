@@ -33,7 +33,7 @@ variable "auto_scale_grp_info" {
         health_check_grace_period = number
     })
     default = {
-        max_size = 2
+        max_size = 1
         min_size = 0
         desired_capacity = 0
         health_check_grace_period = 300
