@@ -2,6 +2,12 @@ resource "aws_cloudwatch_log_group" "ecs_cluster_loggroup" {
   name = "${var.ecs_cluster_name}_loggroup"
 }
 
+//generated cloudformation has this:
+resource "aws_service_discovery_http_namespace" "cluster_http_namespace" {
+  name        = var.ecs_cluster_name
+  description = "${var.ecs_cluster_name} http namespace"
+}
+
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = var.ecs_cluster_name
 
@@ -14,6 +20,10 @@ resource "aws_ecs_cluster" "ecs_cluster" {
         cloud_watch_log_group_name     = aws_cloudwatch_log_group.ecs_cluster_loggroup.name
       }
     }
+  }
+
+  service_connect_defaults {
+    namespace = aws_service_discovery_http_namespace.cluster_http_namespace.arn
   }
 }
 

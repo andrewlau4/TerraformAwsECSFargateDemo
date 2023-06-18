@@ -85,3 +85,8 @@ resource "aws_security_group" "security_ingress" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
+
+data "aws_security_group" "default_security_group" {
+  vpc_id = data.aws_vpc.default_vpc.id
+  name = "default"
+}
