@@ -1,5 +1,10 @@
 variable "ami_image" {
     type = string
+    // need to find an ami that has ecs installed, or
+    // install ami myself
+    // https://repost.aws/knowledge-center/launch-ecs-optimized-ami
+    //From the left navigation pane, choose AWS Marketplace. Then, enter ecs-optimized in the search bar.
+    //default = "al2023-ami-ecs-hvm-2023.0.20230530-kernel-6.1-x86_64*"
     default = "al2023-ami-2023.0.2023*-x86_64*"
 }
 
@@ -30,7 +35,7 @@ variable "auto_scale_grp_info" {
     default = {
         max_size = 2
         min_size = 0
-        desired_capacity = 1
+        desired_capacity = 0
         health_check_grace_period = 300
     }
 }

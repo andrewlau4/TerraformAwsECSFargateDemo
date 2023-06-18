@@ -17,6 +17,20 @@ resource "aws_launch_template" "scale_group_lauch_template" {
     iam_instance_profile {
       arn = aws_iam_instance_profile.ecs_ec2_lauch_template_instance_profile.arn
     }
+
+    network_interfaces {
+      associate_public_ip_address = true
+    }
+
+    security_group_names = [
+        "default", aws_security_group.security_ingress.name
+    ]
+
+    //either install the ecs agent yourself, or use the pre-made ami see 
+    //     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-install.html
+    user_data = base64decode(
+        "${path.module}/install_ecs_agent.sh"
+    )
 }
 
 resource "aws_autoscaling_group" "ecs_auto_scaling" {

@@ -39,3 +39,48 @@ resource "aws_iam_instance_profile" "ecs_ec2_lauch_template_instance_profile" {
   name = "${var.ecs_cluster_name}-ecs_ec2_lauch_template_instance_profile${var.name_suffix}"
   role = aws_iam_role.ecs_ec2_instance_role.name
 }
+
+
+
+
+
+resource "aws_default_vpc" "default_vpc" {
+}
+
+resource "aws_security_group" "security_ingress" {
+  name = "${var.ecs_cluster_name}-allow-${var.name_suffix}"
+  vpc_id = data.aws_default_vpc.default_vpc.id
+
+
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+
+    self = true
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+    ipv6_cidr_blocks = "::/0"
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+    ipv6_cidr_blocks = "::/0"
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+    ipv6_cidr_blocks = "::/0"
+  }
+}
