@@ -31,6 +31,9 @@ resource "aws_launch_template" "scale_group_lauch_template" {
 
     //https://github.com/hashicorp/terraform-provider-aws/issues/4570
     //If you specify a network interface, you must specify any security groups as part of the network interface, and not in the Security Groups section of the template.
+    //
+    //you have to explicitly set SG on the interface level that because an instance could have multiple interfaces each associated with separate security groups
+    //
       security_groups = [ 
         aws_security_group.autoscale_security_ingress.id,
         data.aws_security_group.default_security_group.id
@@ -110,7 +113,7 @@ resource "aws_autoscaling_group" "ecs_auto_scaling" {
     //below caused error:  ValidationError: The security group 'sg-' does not exist in default VPC 'vpc-a'
     //  even i do    terraform destroy   and then  apply is the same 
     //see    https://github.com/hashicorp/terraform/issues/3942
-    //https://github.com/hashicorp/terraform-provider-aws/issues/4570
+    //i think it is related: https://github.com/hashicorp/terraform-provider-aws/issues/4570
     //  by removing vpc_security_group_ids from the aws_launch_template and adding them
     // instead in the network_interfaces block. I also had to include the subnet in the 
     //vpc_zone_identifier list in the aws_autoscaling_group and I used the ${aws_launch_template.nodes.latest_version} format.

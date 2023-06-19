@@ -1,6 +1,12 @@
+locals {
+  replace_suffix_underscore = replace(var.name_suffix, "_", "-")
+}
+
 resource "aws_iam_role" "ecs_ec2_instance_role" {
   name = "${var.ecs_cluster_name}-ec2-instance-role${var.name_suffix}"
- 
+ //look at the generated cloudformation, the principal should be
+ //   ec2.amazonaws.com
+ //NOT   ecs-tasks.amazonaws.com
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -8,7 +14,7 @@ resource "aws_iam_role" "ecs_ec2_instance_role" {
    {
      "Action": "sts:AssumeRole",
      "Principal": {
-       "Service": "ecs-tasks.amazonaws.com"
+       "Service": "ec2.amazonaws.com"
      },
      "Effect": "Allow",
      "Sid": ""
@@ -46,10 +52,6 @@ resource "aws_iam_instance_profile" "ecs_ec2_lauch_template_instance_profile" {
 
 data "aws_vpc" "default_vpc" {
   default = true
-}
-
-locals {
-  replace_suffix_underscore = replace(var.name_suffix, "_", "-")
 }
 
 resource "aws_security_group" "autoscale_security_ingress" {
