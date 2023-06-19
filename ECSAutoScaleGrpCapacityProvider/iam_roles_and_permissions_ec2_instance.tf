@@ -48,8 +48,12 @@ data "aws_vpc" "default_vpc" {
   default = true
 }
 
-resource "aws_security_group" "security_ingress" {
-  name = "${var.ecs_cluster_name}-allow-${var.name_suffix}"
+locals {
+  replace_suffix_underscore = replace(var.name_suffix, "_", "-")
+}
+
+resource "aws_security_group" "autoscale_security_ingress" {
+  name = "${var.ecs_cluster_name}-allow${local.replace_suffix_underscore}"
   vpc_id = data.aws_vpc.default_vpc.id
 
 

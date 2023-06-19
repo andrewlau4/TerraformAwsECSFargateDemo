@@ -10,9 +10,17 @@ data "aws_ami" "ecs_ec2_image" {
 }
 
 resource "aws_launch_template" "scale_group_lauch_template" {
-    name_prefix   = "${var.ecs_cluster_name}_auto_scaling_template1${var.name_suffix}"
+    name_prefix   = "${var.ecs_cluster_name}_auto_scaling_template${var.name_suffix}"
     image_id      = data.aws_ami.ecs_ec2_image.id
     instance_type = var.ami_instance_type
+
+    //add this depends_on because i am getting strange error
+    // about security group id not exists in  default vpc_id,
+    //  see if adding this make any difference
+    depends_on = [ 
+        aws_security_group.autoscale_security_ingress,
+        data.aws_security_group.default_security_group
+     ]
 
     iam_instance_profile {
       arn = aws_iam_instance_profile.ecs_ec2_lauch_template_instance_profile.arn
@@ -21,19 +29,39 @@ resource "aws_launch_template" "scale_group_lauch_template" {
     network_interfaces {
       associate_public_ip_address = true
 
+    //https://github.com/hashicorp/terraform-provider-aws/issues/4570
+    //If you specify a network interface, you must specify any security groups as part of the network interface, and not in the Security Groups section of the template.
       security_groups = [ 
-        aws_security_group.security_ingress.id,
+        aws_security_group.autoscale_security_ingress.id,
         data.aws_security_group.default_security_group.id
         ]
-    }
+        
+    } 
 
     //https://github.com/hashicorp/terraform-provider-aws/issues/4570
     //Remove the SG from the bottom, not the interface.
     // no that is not the issue, the issue is the name already exists, so i call it
     //  Remove the SG from the bottom, not the interface. instead
+    //
+    //https://github.com/hashicorp/terraform/issues/3942
+    //https://stackoverflow.com/questions/52104931/aws-security-group-not-in-vpc-error-with-terraform
+    
+    //got error: ValidationError: You must use a valid fully-formed launch template. The parameter groupName cannot be used with the parameter subnet
+    // see https://www.javacodegeeks.com/2020/08/aws-cloudformation-autoscaling-group-you-must-use-a-valid-fully-formed-launch-template.html
+
+/*    
     security_group_names = [
-        "default", aws_security_group.security_ingress.name
+        //"default",
+        data.aws_security_group.default_security_group.name,
+//        //maybe name doesn't work because it doesn't has name
+        aws_security_group.autoscale_security_ingress.name
     ]
+*/
+//see https://github.com/hashicorp/terraform-provider-aws/issues/4570
+    /* vpc_security_group_ids = [
+        aws_security_group.autoscale_security_ingress.id,
+        data.aws_security_group.default_security_group.id
+        ] */
 
     //either install the ecs agent yourself, or use the pre-made ami see 
     //     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-install.html
@@ -68,14 +96,24 @@ resource "aws_autoscaling_group" "ecs_auto_scaling" {
 
     protect_from_scale_in = true
 
+    depends_on = [ aws_launch_template.scale_group_lauch_template ]
+
     launch_template {
         id = aws_launch_template.scale_group_lauch_template.id
-        version = "$Default"
+        version = aws_launch_template.scale_group_lauch_template.latest_version
     }
 
     //availability_zones = [ var.avail_zone ]
     //cloudformation uses  vpc_zone_identifier       and not availability_zones don't
     //  know if there is any difference
+    
+    //below caused error:  ValidationError: The security group 'sg-' does not exist in default VPC 'vpc-a'
+    //  even i do    terraform destroy   and then  apply is the same 
+    //see    https://github.com/hashicorp/terraform/issues/3942
+    //https://github.com/hashicorp/terraform-provider-aws/issues/4570
+    //  by removing vpc_security_group_ids from the aws_launch_template and adding them
+    // instead in the network_interfaces block. I also had to include the subnet in the 
+    //vpc_zone_identifier list in the aws_autoscaling_group and I used the ${aws_launch_template.nodes.latest_version} format.
     vpc_zone_identifier       = data.aws_subnets.avail_zone_subnets.ids 
 
     tag {
