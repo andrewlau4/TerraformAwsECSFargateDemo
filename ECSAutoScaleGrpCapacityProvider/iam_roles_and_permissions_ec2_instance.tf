@@ -31,9 +31,6 @@ EOF
 //Set up a task Execution IAM Role for the Fargate launch type
 //Set up an instance IAM Role for the EC2 launch type
 //Create an IAM Role for Tasks
-//
-//https://stackoverflow.com/questions/66696083/how-to-get-set-aws-ecs-container-instance-role
-//The console leads you to believe it's an ECS property but in fact it's simply an EC2 property known as "IAM Instance Profile". You have to specify this role by setting the IamInstanceProfile property on a AWS::EC2::Instance or even better on a AWS::EC2::LaunchTemplate resource that can be used inside an AutoScaling group. 
 resource "aws_iam_role_policy_attachment" "ecs_ec2_task-execution-role-policy-attachment" {
   role       = aws_iam_role.ecs_ec2_instance_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
@@ -41,6 +38,7 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_task-execution-role-policy-at
 
 
 //https://stackoverflow.com/questions/66696083/how-to-get-set-aws-ecs-container-instance-role
+//The console leads you to believe it's an ECS property but in fact it's simply an EC2 property known as "IAM Instance Profile". You have to specify this role by setting the IamInstanceProfile property on a AWS::EC2::Instance or even better on a AWS::EC2::LaunchTemplate resource that can be used inside an AutoScaling group. 
 resource "aws_iam_instance_profile" "ecs_ec2_lauch_template_instance_profile" {
   name = "${var.ecs_cluster_name}-ecs_ec2_lauch_template_instance_profile${var.name_suffix}"
   role = aws_iam_role.ecs_ec2_instance_role.name
