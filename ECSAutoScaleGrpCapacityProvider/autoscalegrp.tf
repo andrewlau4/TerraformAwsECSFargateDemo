@@ -43,24 +43,23 @@ resource "aws_launch_template" "scale_group_lauch_template" {
 
     //https://github.com/hashicorp/terraform-provider-aws/issues/4570
     //Remove the SG from the bottom, not the interface.
-    // no that is not the issue, the issue is the name already exists, so i call it
     //  Remove the SG from the bottom, not the interface. instead
     //
     //https://github.com/hashicorp/terraform/issues/3942
     //https://stackoverflow.com/questions/52104931/aws-security-group-not-in-vpc-error-with-terraform
     
     //got error: ValidationError: You must use a valid fully-formed launch template. The parameter groupName cannot be used with the parameter subnet
-    // see https://www.javacodegeeks.com/2020/08/aws-cloudformation-autoscaling-group-you-must-use-a-valid-fully-formed-launch-template.html
+    //   this error message is misleading, the real problem is that  security_group_names and vpc_security_group_ids is not
+    //    compatible with    network_interfaces
 
-/*    
+    /*    
     security_group_names = [
         //"default",
         data.aws_security_group.default_security_group.name,
-//        //maybe name doesn't work because it doesn't has name
         aws_security_group.autoscale_security_ingress.name
     ]
-*/
-//see https://github.com/hashicorp/terraform-provider-aws/issues/4570
+    */
+    //see https://github.com/hashicorp/terraform-provider-aws/issues/4570
     /* vpc_security_group_ids = [
         aws_security_group.autoscale_security_ingress.id,
         data.aws_security_group.default_security_group.id
@@ -111,7 +110,8 @@ resource "aws_autoscaling_group" "ecs_auto_scaling" {
     //  know if there is any difference
     
     //below caused error:  ValidationError: The security group 'sg-' does not exist in default VPC 'vpc-a'
-    //  even i do    terraform destroy   and then  apply is the same 
+    //   this error message seems misleading, the real problem seems to be that in aws_launch_template  security_group_names and vpc_security_group_ids is not
+    //    compatible with    network_interfaces
     //see    https://github.com/hashicorp/terraform/issues/3942
     //i think it is related: https://github.com/hashicorp/terraform-provider-aws/issues/4570
     //  by removing vpc_security_group_ids from the aws_launch_template and adding them
