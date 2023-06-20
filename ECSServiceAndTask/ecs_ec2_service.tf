@@ -9,6 +9,7 @@ resource "aws_ecs_service" "ecs_ec2_task_service" {
     //getting error: 
     //  InvalidParameterException: Network Configuration is not valid for the given networkMode of this task definition.
     //  https://github.com/cloudposse/terraform-aws-ecs-alb-service-task/issues/22
+    // for ec2 non-awsvpc, the security_groups is set in the aws_launch_template, for awsvpc, network_configuration is needed here
     /*
     network_configuration {
         subnets = var.service_deploy_to_subnet_ids
