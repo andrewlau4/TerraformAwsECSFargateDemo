@@ -2,7 +2,7 @@
   {
     "image": "${task_image}",
     "name": "${container_name}",
-
+    "cpu": 10,
     "memoryReservation": ${memory_reservation},
 
     "logConfiguration": {

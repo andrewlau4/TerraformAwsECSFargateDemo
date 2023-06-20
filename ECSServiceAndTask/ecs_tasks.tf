@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "ecs_ec2_task_definition" {
     //see https://www.youtube.com/watch?v=AaxG9vRW-4w
     // it seems it need to be bridge mode, or left blank
     //network_mode             = "awsvpc"
-    network_mode             = "bridge"
+    //network_mode             = "bridge"
 
     //cpu                      = var.container_cpu
     //memory                   = var.container_memory
