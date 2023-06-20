@@ -1,7 +1,7 @@
 variable "ami_image" {
     type = string
-    // need to find an ami that has ecs installed, or
-    // install ami myself
+    // need to find an ami that has ecs agent installed, or
+    // install ecs agent myself using the user_data, see https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-install.html
     // https://repost.aws/knowledge-center/launch-ecs-optimized-ami
     //From the left navigation pane, choose AWS Marketplace. Then, enter ecs-optimized in the search bar.
     //default = "al2023-ami-ecs-hvm-2023.0.20230530-kernel-6.1-x86_64*"
