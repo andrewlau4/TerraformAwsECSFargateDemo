@@ -50,6 +50,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task-execution-role-cloudwatch-po
 
 //this is the role given to the container, whatever aws service you want to access
 // from the container, you need to give permission to this role 
+// https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html?icmpid=docs_ecs_hp-task-definition
 resource "aws_iam_role" "ecs_task_role" {
   name = "${var.ecs_cluster_name}-task-role"
  
