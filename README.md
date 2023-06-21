@@ -28,6 +28,8 @@ The weight can be changed in the [create_ecs_infrastructure.tf](create_ecs_infra
         ],
 ```
 
+This project demonstrates the use of these technologies: AWS IAM Role and Policy, VPC, Codepipeline, ECS, Fargate, EC2, Terraform, Docker, CodePipeline
+
 # CodePipeline
 Moreover, a codepipeline is setup to autmatically build an [example node js app](https://github.com/andrewlau4/AwsECSDemoDockerImage) into a docker image; and then push that image into the ECR registry, and then deploy it as ECS service.
 
